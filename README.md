@@ -2,7 +2,7 @@
 
 # Fizmath Plaza
 
-Tremendously simplified event-driven modular monolith ( microservice ready ) e-commerce platform with order processing API.  Created with the fantastic trio: Go, Nats JetStream  and  Vue.js  with rich CRUD operations and fun and luxury PrimeVue UI  with it's integrated Tailwind CSS features. 
+This is an architectural proposal. Tremendously simplified event-driven modular monolith ( microservice ready ) e-commerce platform with order processing microservice.  Created with the fantastic trio: Go, Nats JetStream  and  Vue.js  with rich CRUD operations and fun and luxury PrimeVue UI  with it's integrated Tailwind CSS features. 
 
 Built in accordance with Hexagonal Architecture principles, this platform incorporates CQRS, gRPC-Gateway and  VUE.js compiled files  embedded via ECHO middleware, ... ensuring scalability, maintainability and high performance.
 
