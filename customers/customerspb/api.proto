@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package customerspb;
+
+service CustomersService {
+  rpc RegisterCustomer(RegisterCustomerRequest) returns (RegisterCustomerResponse) {};
+  rpc GetCustomer(GetCustomerRequest) returns (GetCustomerResponse) {};
+}
+
+message Customer {
+  string id = 1;
+  string name = 2;
+  string phone = 3;
+}
+
+
+message RegisterCustomerRequest {
+  string name = 1;
+  string phone = 2;
+}
+message RegisterCustomerResponse {
+  string id = 1;
+}
+
+message GetCustomerRequest {
+  string id = 1;
+}
+message GetCustomerResponse {
+  Customer customer = 1;
+}
+
+
+
+

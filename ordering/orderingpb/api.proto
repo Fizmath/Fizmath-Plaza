@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package orderingpb;
+
+service OrderingService {
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse) {};
+  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse) {};
+  rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse) {};
+  rpc GetAll(GetAllRequest) returns (GetAllResponse) {};
+  rpc RemoveIds(RemoveIdsRequest) returns (RemoveIdsResponse) {};
+
+
+}
+
+message Order {
+  string orderid = 1;
+  string customer_id = 2;
+  string payment_id = 3;
+  repeated Item items = 4;
+  string status = 5;
+  string statusP = 6;
+  string statusS = 7;
+  string created_at = 8;
+}
+
+message Item {
+  string store_id = 1;
+  string product_id = 2;
+  string store_name = 3;
+  string product_name = 4;
+  double price = 5;
+  int32 quantity = 6;
+}
+
+
+message RemoveIdsRequest {
+  repeated Ids Ids = 1;
+}
+
+message RemoveIdsResponse {
+}
+
+message Ids {
+  string orderid = 1;
+}
+
+message GetAllRequest {
+  bool event_sourcing = 1;
+}
+
+message GetAllResponse {
+  repeated Order orders = 1;
+}
+
+
+message CreateOrderRequest {
+  repeated Item items = 1;
+  string customer_id = 2;
+  string payment_id = 3;
+}
+
+message CreateOrderResponse {
+  string orderid = 1;
+}
+
+message GetOrderRequest {
+  string orderid = 1;
+}
+
+message GetOrderResponse {
+  Order order = 1;
+}
+
+message CancelOrderRequest {
+  string orderid = 1;
+}
+
+message CancelOrderResponse {}

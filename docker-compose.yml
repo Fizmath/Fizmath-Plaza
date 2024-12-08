@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: postgres:17.2
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=itsasecret
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+    ports:
+      - "5432:5432"
+    volumes:
+      - 'postgresVol:/var/lib/postgresql/data'
+      - './PostgreSQL:/docker-entrypoint-initdb.d'  
+    networks:
+      - Fizmath-Plaza
+
+  nats:
+      container_name: nats
+      image: nats:2.10.22
+      ports:
+        - '4222:4222'
+        - '8222:8222'
+      command:
+        - -js
+        - -sd
+        - /var/lib/nats/data
+        - --http_port=8222
+      volumes:
+        - 'jetstreamVol:/var/lib/nats/data'
+
+      healthcheck:
+        test: echo $$(wget --server-response http://node1:8222/varz 2>&1 | grep  '200 OK') | grep '200'  || exit 1
+        interval: 20s
+        timeout: 5s
+        retries: 5
+        start_period: 40s 
+      networks:
+      - Fizmath-Plaza
+
+volumes:
+  postgresVol:
+  jetstreamVol:
+  
+networks:
+  Fizmath-Plaza:

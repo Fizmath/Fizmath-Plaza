@@ -1,0 +1,23 @@
+openapiOptions:
+  file:
+    - file: "customerspb/api.proto"
+      option:
+        info:
+          title: Customers
+          version: "1.0.0"
+        basePath: /
+  method:
+    - method: customerspb.CustomersService.RegisterCustomer
+      option:
+        operationId: createCustomer
+        tags:
+          - Customer
+        summary: Create a new customer
+    - method: customerspb.CustomersService.GetCustomer
+      option:
+        operationId: getCustomer
+        tags:
+          - Customer
+        summary: getCustomer     
+        
+  

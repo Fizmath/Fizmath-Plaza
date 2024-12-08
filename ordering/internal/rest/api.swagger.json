@@ -1,0 +1,348 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Order Processing",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "OrderingService"
+    }
+  ],
+  "basePath": "/",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/ordering": {
+      "post": {
+        "summary": "Start a new order",
+        "operationId": "createOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/orderingpbCreateOrderResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/orderingpbCreateOrderRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ]
+      }
+    },
+    "/api/ordering/all": {
+      "post": {
+        "summary": "Get all orders",
+        "operationId": "GetAll",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/orderingpbGetAllResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/orderingpbGetAllRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ]
+      }
+    },
+    "/api/ordering/removebyd": {
+      "post": {
+        "summary": "Delete Orders by Id's",
+        "operationId": "Delete Orders",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/orderingpbRemoveIdsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/orderingpbRemoveIdsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ]
+      }
+    },
+    "/api/ordering/{orderid}": {
+      "get": {
+        "summary": "Get an order",
+        "operationId": "getOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/orderingpbGetOrderResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "orderid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Order"
+        ]
+      },
+      "delete": {
+        "summary": "Cancel an order",
+        "operationId": "cancelOrder",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/orderingpbCancelOrderResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "orderid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Order"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "orderingpbCancelOrderResponse": {
+      "type": "object"
+    },
+    "orderingpbCreateOrderRequest": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/orderingpbItem"
+          }
+        },
+        "customerId": {
+          "type": "string"
+        },
+        "paymentId": {
+          "type": "string"
+        }
+      }
+    },
+    "orderingpbCreateOrderResponse": {
+      "type": "object",
+      "properties": {
+        "orderid": {
+          "type": "string"
+        }
+      }
+    },
+    "orderingpbGetAllRequest": {
+      "type": "object",
+      "properties": {
+        "eventSourcing": {
+          "type": "boolean"
+        }
+      }
+    },
+    "orderingpbGetAllResponse": {
+      "type": "object",
+      "properties": {
+        "orders": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/orderingpbOrder"
+          }
+        }
+      }
+    },
+    "orderingpbGetOrderResponse": {
+      "type": "object",
+      "properties": {
+        "order": {
+          "$ref": "#/definitions/orderingpbOrder"
+        }
+      }
+    },
+    "orderingpbIds": {
+      "type": "object",
+      "properties": {
+        "orderid": {
+          "type": "string"
+        }
+      }
+    },
+    "orderingpbItem": {
+      "type": "object",
+      "properties": {
+        "storeId": {
+          "type": "string"
+        },
+        "productId": {
+          "type": "string"
+        },
+        "storeName": {
+          "type": "string"
+        },
+        "productName": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "double"
+        },
+        "quantity": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "orderingpbOrder": {
+      "type": "object",
+      "properties": {
+        "orderid": {
+          "type": "string"
+        },
+        "customerId": {
+          "type": "string"
+        },
+        "paymentId": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/orderingpbItem"
+          }
+        },
+        "status": {
+          "type": "string"
+        },
+        "statusP": {
+          "type": "string"
+        },
+        "statusS": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      }
+    },
+    "orderingpbRemoveIdsRequest": {
+      "type": "object",
+      "properties": {
+        "Ids": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/orderingpbIds"
+          }
+        }
+      }
+    },
+    "orderingpbRemoveIdsResponse": {
+      "type": "object"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

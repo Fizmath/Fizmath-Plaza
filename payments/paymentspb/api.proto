@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package paymentspb;
+
+
+service PaymentsService {
+  rpc AuthorizePayment(AuthorizePaymentRequest) returns (AuthorizePaymentResponse) {};
+  rpc PayInvoice(PayInvoiceRequest) returns (PayInvoiceResponse) {};
+}
+
+message AuthorizePaymentRequest {
+  string customer_id = 1;
+  double amount = 2;
+}
+
+message AuthorizePaymentResponse {
+  string id = 1;
+}
+
+
+message PayInvoiceRequest {
+  string orderid = 1;
+}
+message PayInvoiceResponse {}
+
+

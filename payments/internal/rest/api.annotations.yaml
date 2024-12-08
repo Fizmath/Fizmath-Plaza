@@ -1,0 +1,9 @@
+type: google.api.Service
+config_version: 3
+http:
+  rules:
+    - selector: paymentspb.PaymentsService.AuthorizePayment
+      post: /api/payments
+      body: "*"
+    - selector: paymentspb.PaymentsService.PayInvoice
+      put: /api/payments/invoices/{orderid}/pay

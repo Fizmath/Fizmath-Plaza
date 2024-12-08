@@ -1,0 +1,169 @@
+syntax = "proto3";
+
+package storespb;
+
+
+service StoresService {
+  rpc CreateStore(CreateStoreRequest) returns (CreateStoreResponse) {};
+  rpc GetStore(GetStoreRequest) returns (GetStoreResponse) {};
+  rpc GetStores(GetStoresRequest) returns (GetStoresResponse) {};
+  rpc EnableParticipation(EnableParticipationRequest) returns (EnableParticipationResponse) {};
+  rpc DisableParticipation(DisableParticipationRequest) returns (DisableParticipationResponse) {};
+  rpc RebrandStore(RebrandStoreRequest) returns (RebrandStoreResponse) {};
+  rpc RemoveST(RemoveSTRequest) returns (RemoveSTResponse) {};
+
+  rpc AddProduct(AddProductRequest) returns (AddProductResponse) {};
+  rpc RemoveProduct(RemoveProductRequest) returns (RemoveProductResponse) {};
+  rpc GetCatalog(GetCatalogRequest) returns (GetCatalogResponse) {};
+  rpc GetProduct(GetProductRequest) returns (GetProductResponse) {};
+  rpc GetAllProds(GetAllRequest) returns (GetAllResponse) {};
+  rpc RemoveIds(RemoveIdsRequest) returns (RemoveIdsResponse) {};
+  rpc RemoveAllProds(RPRequest) returns (RPResponse) {};
+  rpc EditProduct(EDPRequest) returns (EDPResponse) {};
+
+}
+
+
+message Ids {
+  string id = 1;
+}
+
+message Store {
+  string id = 1;
+  string name = 2;
+  string location = 3;
+  bool participating = 4;
+}
+
+message Product {
+  string id = 1;
+  string store_id = 2;
+  string name = 3;
+  string description = 4;
+  int32 sku = 5;
+  double price = 6;
+}
+
+message EDPRequest {
+  string id = 1;
+  string store_id = 2;
+  string name = 3;
+  string description = 4;
+  int32  sku = 5;
+  double price = 6;
+
+}
+
+message EDPResponse {}
+
+message RemoveSTRequest {
+  string id = 1;
+}
+
+message RemoveSTResponse {
+}
+
+
+message RPRequest {
+  string id = 1;
+}
+
+message RPResponse {
+}
+
+
+message RemoveIdsRequest {
+  repeated Ids Ids = 1;
+}
+
+message RemoveIdsResponse {
+}
+
+
+message RebrandStoreRequest {
+  string id = 1;
+  string name = 2;
+  string location=3 ;
+}
+message RebrandStoreResponse {}
+
+message GetAllRequest {}
+
+message GetAllResponse {
+  repeated Product products = 1;
+}
+
+message CreateStoreRequest {
+  string name = 1;
+  string location = 2;
+}
+
+message CreateStoreResponse {
+  string id = 1;
+}
+
+message GetStoreRequest {
+  string id = 1;
+}
+
+message GetStoreResponse {
+  Store store = 1;
+}
+
+message GetStoresRequest {}
+
+message GetStoresResponse {
+  repeated Store stores = 1;
+}
+
+message EnableParticipationRequest {
+  string id = 1;
+}
+
+message EnableParticipationResponse {}
+
+message DisableParticipationRequest {
+  string id = 1;
+}
+
+message DisableParticipationResponse {}
+
+message GetParticipatingStoresRequest {}
+
+message GetParticipatingStoresResponse {
+  repeated Store stores = 1;
+}
+
+message AddProductRequest {
+  string store_id = 1;
+  string name = 2;
+  string description = 3;
+  int32 sku = 4;
+  double price = 5;
+}
+
+message AddProductResponse {
+  string id = 1;
+}
+
+message RemoveProductRequest {
+  string id = 1;
+}
+
+message RemoveProductResponse {}
+
+message GetCatalogRequest {
+  string store_id = 1;
+}
+
+message GetCatalogResponse {
+  repeated Product products = 1;
+}
+
+message GetProductRequest {
+  string id = 1;
+}
+
+message GetProductResponse {
+  Product product = 1;
+}

@@ -1,0 +1,106 @@
+openapiOptions:
+  file:
+    - file: "storespb/api.proto"
+      option:
+        info:
+          title: Plaza Management
+          version: "1.0.0"
+        basePath: /
+  method:
+    - method: storespb.StoresService.CreateStore
+      option:
+        operationId: createStore
+        tags:
+          - Store
+        summary: Create a new store
+    - method: storespb.StoresService.GetStores
+      option:
+        operationId: getStores
+        tags:
+          - Store
+        summary: Get a list of stores
+    - method: storespb.StoresService.GetStore
+      option:
+        operationId: getStore
+        tags:
+          - Store
+        summary: Get a store
+    - method: storespb.StoresService.EnableParticipation
+      option:
+        operationId: enableParticipation
+        tags:
+          - Participation
+        summary: Enable store service participation
+    - method: storespb.StoresService.DisableParticipation
+      option:
+        operationId: disableParticipation
+        tags:
+          - Participation
+        summary: Disable store service participation
+    - method: storespb.StoresService.AddProduct
+      option:
+        operationId: addProduct
+        tags:
+          - Product
+        summary: Add a store product
+    - method: storespb.StoresService.GetProduct
+      option:
+        operationId: getProduct
+        tags:
+          - Product
+        summary: Get a store product
+    - method: storespb.StoresService.RemoveProduct
+      option:
+        operationId: removeProduct
+        tags:
+          - Product
+        summary: Remove a store product
+    - method: storespb.StoresService.GetCatalog
+      option:
+        operationId: getStoreProduct
+        tags:
+          - Product
+        summary: Get a list of store products
+    - method: storespb.StoresService.GetAllProds
+      option:
+        operationId: getAllProduct
+        tags:
+          - AllProducts
+        summary: Get a list of store products    
+
+    - method: storespb.StoresService.RebrandStore
+      option:
+        operationId: rebrandStore
+        tags:
+          - Store
+        summary: Edit a store's name or location    
+
+    - method: storespb.StoresService.RemoveIds
+      option:
+        operationId: RemoveProds
+        tags:
+          - Product
+        summary: Delete selected products from a store    
+
+    - method: storespb.StoresService.RemoveAllProds
+      option:
+        operationId: RemoveAllProds
+        tags:
+          - Product
+        summary: Delete all product from a store   
+
+    - method: storespb.StoresService.RemoveST
+      option:
+        operationId: DeleteAstore
+        tags:
+          - Store
+        summary: Delete a store by ID    
+
+    - method: storespb.StoresService.EditProduct
+      option:
+        operationId: EditProducts
+        tags:
+          - Product
+        summary: Edit a product    
+
+

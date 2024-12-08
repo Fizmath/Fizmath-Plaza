@@ -1,0 +1,47 @@
+type: google.api.Service
+config_version: 3
+http:
+  rules:
+    - selector: storespb.StoresService.CreateStore
+      post: /api/stores
+      body: "*"
+    - selector: storespb.StoresService.GetStores
+      get: /api/stores
+    - selector: storespb.StoresService.GetStore
+      get: /api/stores/{id}
+    - selector: storespb.StoresService.EnableParticipation
+      put: /api/stores/{id}/participating
+      body: "*"
+    - selector: storespb.StoresService.DisableParticipation
+      delete: /api/stores/{id}/participating
+    - selector: storespb.StoresService.AddProduct
+      post: /api/stores/{store_id}/products
+      body: "*"
+    - selector: storespb.StoresService.GetProduct
+      get: /api/stores/products/{id}
+    - selector: storespb.StoresService.RemoveProduct
+      delete: /api/stores/products/{id}
+    - selector: storespb.StoresService.GetCatalog
+      get: /api/stores/{store_id}/products
+
+    - selector: storespb.StoresService.GetAllProds
+      get: /api/stores/products
+
+    - selector: storespb.StoresService.RebrandStore
+      put: /api/stores/{id}/edit
+      body: "*"
+
+    - selector: storespb.StoresService.RemoveIds
+      post: /api/stores/delprods
+      body: "*"
+
+    - selector: storespb.StoresService.RemoveAllProds
+      delete: /api/stores/delallprods/{id}
+
+    - selector: storespb.StoresService.RemoveST
+      delete: /api/stores/delst/{id}
+
+    - selector: storespb.StoresService.EditProduct
+      put: /api/stores/{id}/editproduct
+      body: "*"
+
