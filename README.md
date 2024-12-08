@@ -343,7 +343,7 @@ Anyway, I hope that this foundational demo contribution will be found helpful in
 - https://www.oreilly.com/library/view/designing-event-driven-systems/9781492038252/
 - https://www.oreilly.com/library/view/building-microservices-2nd/9781492034018/
 - https://natsbyexample.com/
-- https://github.com/nats-io/nats.go/blob/main/jetstream/README.md
+- https://github.com/nats-io/nats.go/tree/main/jetstream
 - https://github.com/Sairyss/domain-driven-hexagon
 - https://github.com/GoogleCloudPlatform/microservices-demo
 - https://github.com/thangchung/go-coffeeshop
