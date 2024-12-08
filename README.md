@@ -208,7 +208,7 @@ Now, as a customer add some products to your basket :
 
 ![stores](docs/a5.png)
 
-click the `basket` button with a badge on it to review or delete your items then push `Checkout` in the menubar :
+click the `Basket` button with a badge on it to review or delete your items then push `Checkout` in the menubar :
 
 ![products](docs/a6.png)
 
