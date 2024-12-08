@@ -280,7 +280,7 @@ This concludes our API's functionalities walkthrough.
 
 Just like factoring out equations zyx(a+b+c) = xyza+zyxb+zxyc, Pinia allows you to 'factor out' some arrays and functions, so that independent Views or pages can share them as global variables. This  eliminates the need for a parent-child complex data transfer design. Here is our [Pinia stores](ECHO/VUE/src/stores/global.js) 
 
-Besides VUE's features, those global `basket` and `sstores` array in our Pinia greatly eliminate backend complexities, just forget about the VUE frontend and try to 
+Besides VUE's features, those global `basket` and `sstores` arrays in our Pinia greatly eliminate backend complexities, just forget about the VUE frontend and try to 
 follow the above slides by the Swagger then you will appreciate that nice frontend stack. 
 
 besides Vue Router's main functionalities, sometimes you need  to convey small routing data. see  this [slide](docs/a4.png) 
@@ -319,7 +319,7 @@ In developing this architectural proposal, I may have made some errors or oversi
 You might remove CQRS in ordering and inventory services with impunity as in our payment service. This also gives you more _Pure_ domain. 
 
 
-For order creation scenarios, orchestrating a SAGA may not be strictly necessary. Firstly,  that global `basket` array in our Pinia somehow eliminates backend complexities.
+For order creation scenarios, orchestrating a SAGA may not be strictly necessary. Firstly,  that global `basket` array in our Pinia is an ephemeral frontend cache.
 Secondly, what if a girlie just registered and confirmed the payment then changed  her mind and quitted the purchase not pushing the submit button?  since she may use her  ID after a month or so. For this case  you need to create a `Customers Admin`  page.
  
 [Here](ordering/internal/application/commands/create_order.go) is a simple ACID like SAGA where, first the order saved in the database then if any  error happens in publishing the message, the data removed from the database as if nothing happened.
