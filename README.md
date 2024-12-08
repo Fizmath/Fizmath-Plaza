@@ -283,7 +283,7 @@ Just like factoring out equations zyx(a+b+c) = xyza+zyxb+zxyc, Pinia allows you 
 Besides VUE's features, those global `basket` and `sstores` arrays in our Pinia greatly eliminate backend complexities, just forget about the VUE frontend and try to 
 follow the above slides by the Swagger then you will appreciate that nice frontend stack. 
 
-besides Vue Router's main functionalities, sometimes you need  to convey small routing data. see  this [slide](docs/a4.png) 
+Besides Vue Router's main functionalities, sometimes you need  to convey small routing data. see  this [slide](docs/a4.png) 
 where Pinia in conjunction with Vue Router's [:dynamic](ECHO/VUE/src/router/index.js) conveys some info, if you refresh the page the store's id stays the same but  name and location got lost ,so fix it ! 
 
 
