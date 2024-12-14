@@ -120,6 +120,10 @@ OPEN :
 
 Then follow the slides below . 
 
+> [!WARNING]
+>  There might be a conflicting  issue  between  our `PostgreSQL` container and other dangling or running `PostgreSQL` containers in your
+PC, in this case shut down other running containers or remove dangling containers. You can solve this issue with modifying our [docker-compose](docker-compose.yml) ports and networks ... 
+
 
 - ## Frontend development server
 
