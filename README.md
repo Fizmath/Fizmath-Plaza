@@ -2,18 +2,11 @@
 
 # Fizmath Plaza
 
-This is an architectural proposal. Tremendously simplified event-driven modular-monolith ( microservice ready ) e-commerce platform with order processing microservice.  Created with the fantastic trio: Go, Nats JetStream  and  Vue.js  with rich CRUD operations and fun and luxury PrimeVue UI  with it's integrated Tailwind CSS features. 
+This is an architectural proposal. Tremendously simplified event-driven modular-monolith ( microservice ready ) e-commerce platform with order processing microservice. Created with the fantastic trio: Go, Nats JetStream  and  Vue.js  with rich CRUD operations and fun and luxury PrimeVue UI  with it's integrated Tailwind CSS features. 
 
 Built in accordance with Hexagonal Architecture principles, this platform incorporates CQRS, gRPC-Gateway and  VUE.js compiled files  embedded via ECHO middleware, ... ensuring scalability, maintainability and high performance.
 
 ## The Full Stack
-
-- Frontend 
-  - [Vue 3.4](https://vuejs.org/)
-  - [PrimeVue 4.0 ](https://primevue.org/)
-  - [Pinia 2.2](https://pinia.vuejs.org/)
-  - [Vue Router 4.4](https://router.vuejs.org/)
-  - [Axios 1.7](https://axios-http.com/)
 
 - Backend
   - Go 1.23
@@ -22,6 +15,13 @@ Built in accordance with Hexagonal Architecture principles, this platform incorp
   - [gRPC-Gateway](https://github.com/grpc-ecosystem/grpc-gateway)
   - [Echo 4.12](https://echo.labstack.com/)
 
+- Frontend 
+  - [Vue 3.4](https://vuejs.org/)
+  - [PrimeVue 4.0 ](https://primevue.org/)
+  - [Pinia 2.2](https://pinia.vuejs.org/)
+  - [Vue Router 4.4](https://router.vuejs.org/)
+  - [Axios 1.7](https://axios-http.com/)
+
 
 ## 
 
@@ -29,61 +29,73 @@ Let the gRPC minds it's own API business, the asynchronous event-driven communic
 
 ![general](docs/grpc-gateway.png)
 
-The new  on-demand Pull Consumers in JetStream  substantially  simplifies any event-driven mechanism :  "Since each subscription is fetching messages on-demand, multiple subscriptions can be create bound to the same pull consumer without any additional configuration. Each subscriber can fetch batches of messages and process them concurrently."
+The new  on-demand Pull Consumers in JetStream  substantially  simplifies any event-driven mechanism:  "Since each subscription is fetching messages on-demand, multiple subscriptions can be create bound to the same pull consumer without any additional configuration. Each subscriber can fetch batches of messages and process them concurrently."
 
 
-## Install the project locally  
+## The single-click launcher   
 
-This is a dev installation mode so that you can easily  modify  the code and the architecture both in frontend and backend stacks. Also i did not include any make or bash file, nor did i bound any package to this repo.
+Donwload this repo to your local PC; RUN: 
 
+```bash
+/Fizmath-Plaza-main$ docker compose -f docker-compose.yml up -d 
+```
+after the launching completed, see  docker compose logs to make sure that the database migrated  and ready to accept connections also observe  the satisfying JETSTREAM logo:
+
+```bash
+/Fizmath-Plaza-main$ docker compose logs -f
+```
+then, open these endpoint :
+
+ Service | URI
+ --- | ---
+ECHO-VUE proxy | [http://localhost:4173/](http://localhost:4173//)
+Swagger | [http://localhost:8080/](http://localhost:8080/)
+
+now, you as both Plaza admin and customer, follow the slides below ... 
+
+
+## Local Dev Mode 
+
+This is a development installation mode so that you can easily  modify  the code and the architecture both in frontend and backend stacks. For the sake of simplicity,  i did not include any make or bash file, nor did i bound any package to this repo.
+
+Before launching the Dev Mode shut down the above prod mode :
+```bash
+/Fizmath-Plaza-main$ docker compose -f docker-compose.yml down
+```
 
 -  ## Backend 
 
-First verify  that GO is installed in your PC : 
+First verify that GO is installed in your PC: 
 
 ```bash
 $ go version
 go version go1.23.3 linux/amd64
 ```
-before installing the `go.mod` file you need to install these  `gRPC-Gateway` packages, in the same directory as `go.mod`, RUN:
-
-```bash
-/Fizmath-Plaza-main$ go get \
-    github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
-    github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
-    google.golang.org/protobuf/cmd/protoc-gen-go \
-    google.golang.org/grpc/cmd/protoc-gen-go-grpc
-```
-
-wondering why not `go install` ?  since `go.mod` is there !
-
-for added assurance, run these commands as well, 
-
-```bash
-/Fizmath-Plaza-main$ export PATH="$PATH:$(go env GOPATH)/bin"
-
-/Fizmath-Plaza-main$ PATH="${PATH}:${HOME}/go/bin" 
-```
-
-then RUN : 
-
-```bash
-/Fizmath-Plaza-main$ go mod tidy 
-``` 
 
 the project requires that the NATS server and the PostgreSQL database are both up and running. Nothing is more cleaner than  docker-compose to pull the images and to configure envs and volumes locally :
 
 ```bash
-/Fizmath-Plaza-main$ docker compose up -d
+/Fizmath-Plaza-main$ docker compose -f docker-compose-Dev.yml up -d
 ``` 
 
-see the docker compose logs to make sure that the database migrated  and ready to accept connections also you'll see the  satisfying JETSTREAM logo :
-
+enter into  the docker compose logs:
 ```bash
 /Fizmath-Plaza-main$ docker compose logs -f
 ``` 
 
-in the `/cmd`  directory RUN : 
+uncomment these two lines in our [main.go](cmd/main.go)
+
+```Go
+// os.Setenv("PG_CONN", "host=localhost dbname=fizmathplaza user=fizmathplaza_user password=fizmathplaza_pass  sslmode=disable ")
+// os.Setenv("NATS_URL", "http://localhost:4222")
+```
+
+
+> [!IMPORTANT]
+> Compare our dev and prod docker composes. Analyze why those two lines should be un/commented.
+
+
+In the `/cmd`  directory open another terminal;  RUN: 
 
 ```bash
 /Fizmath-Plaza-main/cmd$ go run . 
@@ -98,36 +110,11 @@ checkout the Swagger endpoint :
 ![swagger](docs/swagger.png)
 
 once you see the above endpoint up and running it means that the backend service is ready.
-For now do not mess with the Swagger, we have a nice frontend UI ...
-
-- ## Embedded frontend with ECHO middleware using reverse proxy
-
-while yet the docker compose and the above backend are both running, open a new Terminal in this directory `ECHO/` and RUN :
-
-```bash
-/Fizmath-Plaza-main/ECHO$ go run .
-```
-this launches the ECHO server  :  [main.go](ECHO/main.go)
-
-The embedded `dist` folder was generated by the command `npm run build` from the `ECHO/VUE` directory. It contains compactly compiled files of our VUE source code, suitable for production.
-
-OPEN :
-
- Service | URI
- --- | ---
- ECHO reverse-proxy | [http://localhost:4173/](http://localhost:4173/)
-
-
-Then follow the slides below . 
-
-> [!WARNING]
->  There might be a conflicting  issue  between  our `PostgreSQL` container and other dangling or running `PostgreSQL` containers in your
-PC, in this case shut down other running containers or remove dangling containers. You can solve this issue with modifying our [docker-compose](docker-compose.yml) ports and networks ... 
-
+For now do not mess with the Swagger, we have a nice frontend UI
 
 - ## Frontend development server
 
-For any modifications to the project,  the frontend VUE source code  is available in the `ECHO/VUE` directory
+for any modifications to the project, the frontend VUE source code  is available in the `ECHO/VUE` directory
 
 first make sure that Node.js and npm are installed in your laptop : 
 
@@ -138,22 +125,19 @@ v18.19.1
 $ npm -v
 9.2.0
 ```
-for the  development you don't need the `ECHO` server, so shut it down by `CTRL+C`.  
-
-While still  docker compose and the backend in `cmd`  are both up and running, in the `/ECHO/VUE` directory RUN :
+while still  docker compose and the backend in `cmd`  are both up and running, open an another terminal int the `/ECHO/VUE` directory; RUN :
 
 ```bash
 /Fizmath-Plaza-main/ECHO/VUE$ npm install
 ``` 
 
-this installs all the freezed packages from  [package.json](ECHO/VUE/package.json) 
+this installs the freezed packages from  [package.json](ECHO/VUE/package.json) 
 
 > [!WARNING]
 > Javascript's dependencies are something out of  hell. Even packages that were frozen in place by `package.json`, which were installed without any issues just yesterday, are now causing dozens of error messages and 
 deprecation warnings when simply re-installed today - with no apparent explanation or solution.
 
-
-after the installation done, a new heavy folder `node_modules` generated in the same directory. RUN :
+a new heavy folder `node_modules` generated in the same directory; RUN :
 
 ```bash
 /Fizmath-Plaza-main$/ECHO/VUE$ npm run dev
@@ -164,11 +148,39 @@ open this endpoint :
  --- | ---
  VUE UI | [http://localhost:5173/](http://localhost:5173/)
 
-this is a development server which auto-updates the browser when you save changes. Now you can make changes to the VUE's source code . Note that this server requires that the  backend is up and running. For any pertinent backend changes you ought to re-compile the Go server in the `/cmd` directory.
+this is a development server which auto-updates the browser when you save changes. Now you can make changes to the VUE's source code. For any pertinent backend changes you ought to re-compile the Go server in the `/cmd` directory.
 
-Once your are happy with your new modifications, you can update the ` dist ` folder by  `npm run build` for  your `ECHO` production server.
+Once your are happy with your new modifications, you can update the embedded `dist` folder by  `npm run build` for  your `ECHO` production server.
 
-There are yet two additional installation hints for your dev environment : 
+```bash
+/Fizmath-Plaza-main$/ECHO/VUE$ npm run build
+``` 
+
+- ## Embedded frontend with ECHO middleware using reverse proxy
+
+Following re-freezing your `dist`  folder for production mode , you no longer need the above frontend server, so shut it down by `CTR+C`
+
+in this directory `ECHO/`  RUN :
+
+```bash
+/Fizmath-Plaza-main/ECHO$ go run .
+```
+this launches the ECHO production server  :  [main.go](ECHO/main.go)
+
+
+ Service | URI
+ --- | ---
+ ECHO reverse-proxy | [http://localhost:4173/](http://localhost:4173/)
+
+
+
+> [!WARNING]
+>  There might be a conflicting  issue  between  our `PostgreSQL` container and other dangling or running `PostgreSQL` containers in your
+PC, in this case shut down other running containers or remove dangling containers. 
+
+
+
+- ## Additional installation hints for your dev environment
 
 - SWAGGER UI
 
@@ -179,12 +191,34 @@ I downloaded the swagger UI from [here](https://github.com/swagger-api/swagger-u
 If you modify  any of the   `.proto` files,  you ought to  re-compile buf files;  [buf.gen.yaml](ordering/buf.gen.yaml);  by running  `$ go generate` in the same directory. 
 I installed  [BUF](https://github.com/bufbuild/buf) in Ubuntu by [Homebrew](https://brew.sh/)
 
+
 ```bash
 $ buf --version
 1.47.2 
 ``` 
 
-## Screenshots and Discussion
+- gRPC-Gateway
+
+in some dev cases in the same directory as `go.mod` you might also need these:
+
+```bash
+$ go get \
+    github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
+    github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
+    google.golang.org/protobuf/cmd/protoc-gen-go \
+    google.golang.org/grpc/cmd/protoc-gen-go-grpc
+```
+
+Finally, for added assurance: 
+
+```bash
+$ export PATH="$PATH:$(go env GOPATH)/bin"
+
+$ PATH="${PATH}:${HOME}/go/bin" 
+```
+
+
+## Screenshots and Discussions
 
 from the sidebar menu click  the Plaza Admin page then enter your inventory name and location  by clicking the `+new` dialog :
 
@@ -222,7 +256,7 @@ After getting your `Payment ID`  the `submit` button will be enabled, now you ca
 
 ![shopping](docs/a7.png)
 
-After pushing the submit button click the `Your Orders` tab then after a few seconds you see your initial order status `pending` :
+after pushing the submit button click the `Your Orders` tab then after a few seconds you see your initial order status `pending` :
 
 ![order](docs/a8.png)
 
@@ -234,7 +268,7 @@ By submitting your order  you just launched JetStream  publishers and consumers 
 
 ![orderaccept](docs/a9.png)
 
-once your order ` accepted`  the `Pay` button get enabled, so either push it to get `deliverd` status or click `cancel`  for whatever reason.
+once your order `accepted`  the `Pay` button get enabled, so either push it to get `deliverd` status or click `cancel`  for whatever reason.
 
  -  Payment confirmation  event
 
@@ -250,14 +284,14 @@ Secondly, if your order's total  amount is greater than your mocked authorized p
 After `15 seconds` you get store confirmation event. [here](stores/internal/application/commands/confirm_event.go) is the backend code.
 
 
-If your order's  product  quantity is greater than SKU then you get ` OUT_OF_STOCK` event. You can get this event  by deliberately entering the quantity greater than SKU. Note that this is just for demo: no frontend restrictions. 
+If your order's  product  quantity is greater than SKU then you get `OUT_OF_STOCK` event. You can get this event  by deliberately entering the quantity greater than SKU. Note that this is just for demo: no frontend restrictions. 
 
 There is a more realistic way to get this rejection event: after submitting your order, immediately copy your Customer's ID before leaving the Customer's page ( since there is no KEEP ALIVE ) then jump to the `Plaza Admin` page and  find the store and one of our submitted products, there  push the edit button and in the SKU field enter `0` then save the dialog box.
-Back to the  the customer's page paste your id  then click ` get your account` then go to the ` Your Order` tab . if your have succeeded under `15` seconds refresh to see the ` OUT_OF_STOCK` event.
+Back to the  the customer's page paste your id  then click `get your account` then go to the `Your Order` tab . if your have succeeded under `15` seconds refresh to see the  OUT_OF_STOCK` event.
 
 ![orderreject](docs/a10.png)
 
-after creating some orders, let's got to the ` ORDER ADMIN` page in the menubar :
+after creating some orders, let's got to the `ORDER ADMIN` page in the menubar :
 
 
 ##  Event Sourcing 
@@ -305,7 +339,7 @@ represent ports and adapters in a single page
 
 for JetStream we have both publisher and consumer ports and adapters, consumed by domain and applications. 
 
-Consumer adapters receive incoming messages  then "DRIVE" them into the application via ConfirmOrder Port this  is why i pinned them at the driver's side. 
+Consumer adapters receive incoming messages  then "DRIVE" them into the application via ConfirmOrder and other Confirmation Ports this  is why i pinned them at the driver's side. 
 
 Actually, The Hexagonal Architecture provides a clear and concise 'blueprint' for building modular, scalable, and  adaptable software systems.
 

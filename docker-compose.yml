@@ -1,12 +1,17 @@
 services:
   postgres:
+    container_name: plaza_postgres
     image: postgres:17.2
+    hostname: postgres
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=itsasecret
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
     ports:
       - "5432:5432"
     volumes:
@@ -15,12 +20,17 @@ services:
     networks:
       - Fizmath-Plaza
 
-  nats:
-      container_name: nats
-      image: nats:2.10.22
+  gonuts:
+      container_name: plaza_nats
+      image: nats:2.10.24-alpine3.21
       ports:
         - '4222:4222'
         - '8222:8222'
+      healthcheck:
+          test: wget --no-verbose --tries=1 --spider http://localhost:8222/healthz || exit 1
+          interval: 15s
+          timeout: 5s
+          retries: 5
       command:
         - -js
         - -sd
@@ -29,11 +39,51 @@ services:
       volumes:
         - 'jetstreamVol:/var/lib/nats/data'
       networks:
-      - Fizmath-Plaza
+        - Fizmath-Plaza
 
+  backend:
+      container_name: plaza_backend
+      image: fizmathplaza
+      pull_policy: never
+      build:
+        context: .
+        dockerfile: ./Dockerfile
+      environment:
+          NATS_URL: gonuts:4222
+          PG_CONN: host=postgres dbname=fizmathplaza user=fizmathplaza_user password=fizmathplaza_pass  sslmode=disable
+      command: ["/fizmath/backend"]   
+      ports:
+         - 8080:8080
+      depends_on:
+        postgres:
+           condition: service_healthy   
+        gonuts:
+           condition: service_healthy
+      networks:
+         - Fizmath-Plaza  
+
+  echo:
+      container_name: plaza_echo
+      image: echoproxy
+      pull_policy: never
+      build:
+        context: .
+        dockerfile: ./ECHO/Dockerfile
+      ports:
+         - 4173:4173
+      depends_on:
+        postgres:
+          condition: service_healthy    
+        gonuts:
+          condition: service_healthy
+        backend:
+          condition: service_started  
+      networks:
+          - Fizmath-Plaza  
+        
 volumes:
   postgresVol:
   jetstreamVol:
-  
+
 networks:
   Fizmath-Plaza:

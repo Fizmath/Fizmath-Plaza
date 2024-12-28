@@ -1,0 +1,34 @@
+services:
+  postgres:
+    container_name: plaza_postgres
+    image: postgres:17.2
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=itsasecret
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+    ports:
+      - "5432:5432"
+    volumes:
+      - 'postgresVolDeV:/var/lib/postgresql/data'
+      - './PostgreSQL:/docker-entrypoint-initdb.d'  
+
+  nats:
+      container_name: plaza_nats
+      image: nats:2.10.24-alpine3.21
+      ports:
+        - '4222:4222'
+        - '8222:8222'
+      command:
+        - -js
+        - -sd
+        - /var/lib/nats/data
+        - --http_port=8222
+      volumes:
+        - 'jetstreamVolDeV:/var/lib/nats/data'
+
+volumes:
+  postgresVolDeV:
+  jetstreamVolDeV:
+  

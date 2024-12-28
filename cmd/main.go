@@ -35,8 +35,11 @@ func main() {
 }
 
 func run() (err error) {
-	os.Setenv("PG_CONN", "host=localhost dbname=fizmathplaza user=fizmathplaza_user password=fizmathplaza_pass  sslmode=disable ")
-	os.Setenv("NATS_URL", "http://localhost:4222")
+	//  Uncomment for the Local Dev Mode :
+
+	// os.Setenv("PG_CONN", "host=localhost dbname=fizmathplaza user=fizmathplaza_user password=fizmathplaza_pass  sslmode=disable ")
+	// os.Setenv("NATS_URL", "http://localhost:4222")
+	
 	var cfg config.AppConfig
 
 	cfg, err = config.InitConfig()
