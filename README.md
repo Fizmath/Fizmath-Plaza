@@ -44,7 +44,7 @@ after the launching completed, see  docker compose logs to make sure that the da
 ```bash
 /Fizmath-Plaza-main$ docker compose logs -f
 ```
-then, open these endpoint :
+then, open these endpoints :
 
  Service | URI
  --- | ---
@@ -58,7 +58,7 @@ now, you as both Plaza admin and customer, follow the slides below ...
 
 This is a development installation mode so that you can easily  modify  the code and the architecture both in frontend and backend stacks. For the sake of simplicity,  i did not include any make or bash file, nor did i bound any package to this repo.
 
-Before launching the Dev Mode shut down the above prod mode :
+Before launching the Dev Mode gracefully shut down the above prod mode :
 ```bash
 /Fizmath-Plaza-main$ docker compose -f docker-compose.yml down
 ```
@@ -110,7 +110,7 @@ checkout the Swagger endpoint :
 ![swagger](docs/swagger.png)
 
 once you see the above endpoint up and running it means that the backend service is ready.
-For now do not mess with the Swagger, we have a nice frontend UI
+For now do not mess with the Swagger, we have a nice frontend UI :
 
 - ## Frontend development server
 
@@ -150,7 +150,7 @@ open this endpoint :
 
 this is a development server which auto-updates the browser when you save changes. Now you can make changes to the VUE's source code. For any pertinent backend changes you ought to re-compile the Go server in the `/cmd` directory.
 
-Once your are happy with your new modifications, you can update the embedded `dist` folder by  `npm run build` for  your `ECHO` production server.
+Once your are happy with your new modifications, you can update the embedded `dist` folder by  `npm run build` for  your `ECHO` production server. Shut down the above server by `CTRL+C` then RUN : 
 
 ```bash
 /Fizmath-Plaza-main$/ECHO/VUE$ npm run build
@@ -158,9 +158,7 @@ Once your are happy with your new modifications, you can update the embedded `di
 
 - ## Embedded frontend with ECHO middleware using reverse proxy
 
-Following re-freezing your `dist`  folder for production mode , you no longer need the above frontend server, so shut it down by `CTR+C`
-
-in this directory `ECHO/`  RUN :
+following re-freezing your `dist`  folder for production mode in this directory `ECHO/`  RUN :
 
 ```bash
 /Fizmath-Plaza-main/ECHO$ go run .
@@ -179,6 +177,11 @@ this launches the ECHO production server  :  [main.go](ECHO/main.go)
 PC, in this case shut down other running containers or remove dangling containers. 
 
 
+In the end, do not forget to remove the dev mode with grace, else you'll get ports already allocated errors for your next adventures :
+
+```bash
+/Fizmath-Plaza-main$ docker compose -f docker-compose-Dev.yml down
+``` 
 
 - ## Additional installation hints for your dev environment
 
@@ -310,7 +313,6 @@ By clicking on the `Event Sourcing` button, you'll receive all events for all or
 ![orderevents](docs/a12.png)
 
 
-As an added perk, simply open your browser's developer tools and indulge in the error-free `console`. 
 
 This concludes our API's functionalities walkthrough.
 
