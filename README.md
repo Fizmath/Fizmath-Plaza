@@ -2,7 +2,7 @@
 
 # Fizmath Plaza
 
-This is an architectural proposal. Tremendously simplified event-driven modular-monolith ( microservice ready ) e-commerce platform with order processing microservice. Created with the fantastic trio: Go, Nats JetStream  and  Vue.js  with rich CRUD operations and fun and luxury PrimeVue UI  with it's integrated Tailwind CSS features. 
+Tremendously simplified event-driven modular-monolith ( microservice ready ) e-commerce platform with order processing service. Created with the fantastic trio: Go, Nats JetStream  and  Vue.js  with rich CRUD operations and fun and luxury PrimeVue UI  with it's integrated Tailwind CSS features. 
 
 Built in accordance with Hexagonal Architecture principles, this platform incorporates CQRS, gRPC-Gateway and  VUE.js compiled files  embedded via ECHO middleware, ... ensuring scalability, maintainability and high performance.
 
@@ -306,7 +306,7 @@ The `refresh`  buttons retrieves final status of all orders  recorded by timelap
 
 ![orderadmin](docs/a11.png)
 
-The order repository  has no `UPDATE` command. Every single row is an event sorted by timestamp. The [ordering database](PostgreSQL/3_create_ordering_schema.sh)  has a `SERIAL` auto-increment  pseudo-type as foreign key, unlike other databases where the foreign key set as `uuid`, therefore,  in conjunction with timestamptz and order's `uuid` identifier we have  impossible to duplicate and easy to manage `event versioning` mechanism. 
+The order repository  has no `UPDATE` command. Every single row is an event sorted by timestamp. The [ordering database](PostgreSQL/3_create_ordering_schema.sh)  has a `SERIAL` auto-increment  pseudo-type as Primary Key, unlike other databases where Primary Keys set as `uuid`, therefore,  in conjunction with timestamptz and order's `uuid` identifier we have  impossible to duplicate and easy to manage `event versioning` mechanism. 
 
 By clicking on the `Event Sourcing` button, you'll receive all events for all orders. To single out a specific order just copy an order ID and paste it into the search box you'll see timeline of all events of a specific order. Use ` date created`  to sort by ascending or descending time :
 
